@@ -1,0 +1,5 @@
+rootProject.name="gRPC-test-task"
+
+include 'grpc-server'
+include 'grpc-client'
+

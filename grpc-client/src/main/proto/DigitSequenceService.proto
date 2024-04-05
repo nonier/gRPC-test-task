@@ -1,0 +1,15 @@
+syntax = "proto3";
+package org.example;
+
+message SequenceRequest {
+  int64 firstValue = 1;
+  int64 lastValue = 2;
+}
+
+message SequenceResponse {
+  int64 value = 1;
+}
+
+service DigitSequenceService {
+  rpc getSequence(SequenceRequest) returns (stream SequenceResponse);
+}
