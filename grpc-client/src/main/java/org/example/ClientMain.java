@@ -8,8 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 
 public class ClientMain {
 
@@ -28,15 +27,15 @@ public class ClientMain {
         DigitSequenceServiceGrpc.DigitSequenceServiceStub stub = DigitSequenceServiceGrpc.newStub(channel);
         ServerValue serverValue = new ServerValue(0L);
         stub.getSequence(request, new SequenceObserver(serverValue));
-        Set<Long> values = new HashSet<>();
         long current = 0;
+        Long prevValue = null;
         for (int i = 1; i <= ITERATIONS_COUNT; i++) {
             long value = serverValue.getValue();
-            if (values.contains(value)) {
+            if (Objects.equals(prevValue, value)) {
                 current = current + 1;
             } else {
                 current = current + value + 1;
-                values.add(value);
+                prevValue = value;
             }
             log.info("Iterations left: {}, Current value: {}", ITERATIONS_COUNT - i, current);
             try {
